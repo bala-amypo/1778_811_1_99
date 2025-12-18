@@ -2,7 +2,7 @@ package com.demo.service.impl;
 import com.example.demo.entity.Role;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
-import org.framework.stereotype.Service;
+import org.springframework.stereotype.Service;
 @Service
 
 public class RoleServiceImpl implements RoleService{
