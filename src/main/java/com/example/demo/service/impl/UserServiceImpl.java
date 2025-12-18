@@ -6,7 +6,7 @@ import com.example.demo.repository.UserRepository;
 import org.framework.stereotype.Service;
 import java.util.Set;
 @Service
-@Column(unique=true)
+
 public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final RoleRepository roleRepositor
@@ -16,7 +16,8 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public createUser(User user,String rolename){
-        Role role=roleRepository.findByName(rolename).orElseThrow(()->new RunTimeExceptioon)
-        return roleRepository.findByName(rolename).orElse(()=>roleRepository.save(new Role(roleName)));
+        Role role=roleRepository.findByName(rolename).orElseThrow(()->new RunTimeException("Role not found: "+rolename));
+        user.setRoles(Set.of(role));
+        return userRepository.save(user);
     }
 }

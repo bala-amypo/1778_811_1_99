@@ -4,7 +4,7 @@ import com.example.demo.repository.RoleRepository;
 import com.example.demo.service.RoleService;
 import org.framework.stereotype.Service;
 @Service
-@Column(unique=true)
+
 public class RoleServiceImpl implements RoleService{
     private final RoleRepository roleRepository;
     public RoleServiceImpl(RoleRepository roleRepository){
@@ -12,6 +12,6 @@ public class RoleServiceImpl implements RoleService{
     }
     @Override
     public createRole(String rolename){
-        return roleRepository.findByName(rolename).orElse(()=>roleRepository.save(new Role(roleName)));
+        return roleRepository.findByName(rolename).orElse(()->roleRepository.save(new Role(roleName)));
     }
 }
