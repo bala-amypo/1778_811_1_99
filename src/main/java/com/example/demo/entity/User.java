@@ -36,8 +36,9 @@ public class User {
     public User() {
         this.createdAt = LocalDateTime.now();
     }
+    
 
-    // Getters and setters
+    
 
     public Long getId() {
         return id;
@@ -67,7 +68,7 @@ public class User {
         return password;
     }
 
-    // Password should be hashed before saving
+    
     public void setPassword(String password) {
         this.password = password;
     }
