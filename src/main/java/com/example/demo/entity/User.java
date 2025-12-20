@@ -2,8 +2,9 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
@@ -21,7 +22,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password;
+    private String password; // BCrypt hash only
 
     private LocalDateTime createdAt;
 
@@ -31,14 +32,29 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Set<Role> roles;
 
+    @OneToMany(mappedBy = "approvedBy")
+    @JsonIgnore
+    private Set<AssetDisposal> approvedDisposals;
+
+    // ✅ Required no-arg constructor
     public User() {
+    }
+
+    // ✅ Required parameterized constructor
+    public User(String name,
+                String email,
+                String password,
+                Set<Role> roles) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
         this.createdAt = LocalDateTime.now();
     }
-    
 
-    
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
@@ -59,33 +75,40 @@ public class User {
     public String getEmail() {
         return email;
     }
-
+ 
     public void setEmail(String email) {
         this.email = email;
     }
-
+ 
     public String getPassword() {
         return password;
     }
-
-    
+ 
     public void setPassword(String password) {
         this.password = password;
     }
-
+ 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
+ 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
+ 
     public Set<Role> getRoles() {
         return roles;
     }
-
+ 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<AssetDisposal> getApprovedDisposals() {
+        return approvedDisposals;
+    }
+
+    public void setApprovedDisposals(Set<AssetDisposal> approvedDisposals) {
+        this.approvedDisposals = approvedDisposals;
     }
 }
