@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/vendors")
-public class VendorController {
+public class VendorController{
 
     private final VendorService vendorService;
 

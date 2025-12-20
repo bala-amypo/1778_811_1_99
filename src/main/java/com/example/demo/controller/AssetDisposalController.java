@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/disposals")
-public class AssetDisposalController {
+public class AssetDisposalController{
 
     private final AssetDisposalService disposalService;
 
