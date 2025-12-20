@@ -6,7 +6,6 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.RoleRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -17,14 +16,11 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -37,7 +33,7 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role USER not found"));
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        // 🔴 NO password encoding anymore
         user.setRoles(Set.of(userRole));
         user.setCreatedAt(LocalDateTime.now());
 
@@ -52,8 +48,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findById(Long id) {
-        if(id==null){
-            throw new IllegalArgumentException("Id must not be null findById");
+        if (id == null) {
+            throw new IllegalArgumentException("Id must not be null");
         }
         return userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
