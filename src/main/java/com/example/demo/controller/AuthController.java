@@ -17,13 +17,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        // Dummy implementation
+        // Dummy response with empty constructor
         AuthResponse response = new AuthResponse();
-        response.setToken("dummy-jwt-token");
-        response.setUserId(1L);
-        response.setEmail(request.getEmail());
-        response.setRoles(java.util.List.of("USER"));
-
         return ResponseEntity.ok(response);
     }
 }
