@@ -1,3 +1,3 @@
 package com.example.demo.security;
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter {
 }
