@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
-public class AssetLifecycleEventControllrr {
+public class AssetLifecycleEventController {
 
     private final AssetLifecycleEventService eventService;
 

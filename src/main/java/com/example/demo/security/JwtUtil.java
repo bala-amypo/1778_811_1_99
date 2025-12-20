@@ -1,5 +1,5 @@
 package com.example.demo.security;
 
-//@Component
+@Component
 public class JwtUtil {
 }
