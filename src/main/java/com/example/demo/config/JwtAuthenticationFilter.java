@@ -1,3 +1,3 @@
-package com.example.demo.security;
+package com.example.demo.config;
 public class JwtAuthenticationFilter {
 }
