@@ -27,7 +27,6 @@ public class AssetDisposal {
     @JsonIgnore
     private User approvedBy;
 
-    // ✅ Required no-arg constructor
     public AssetDisposal() {
     }
 
@@ -45,7 +44,6 @@ public class AssetDisposal {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
