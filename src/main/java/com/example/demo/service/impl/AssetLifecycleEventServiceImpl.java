@@ -59,7 +59,7 @@ public class AssetLifecycleEventServiceImpl implements AssetLifecycleEventServic
         if (assetId == null) {
             throw new IllegalArgumentException("AssetId must not be null");
         }
-        // Ensure asset exists
+
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
