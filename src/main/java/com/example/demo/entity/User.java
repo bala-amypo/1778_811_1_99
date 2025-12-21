@@ -22,7 +22,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String password; // BCrypt hash only
+    private String password; 
 
     private LocalDateTime createdAt;
 
