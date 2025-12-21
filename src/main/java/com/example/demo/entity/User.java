@@ -38,11 +38,9 @@ public class User {
     @JsonIgnore
     private Set<AssetDisposal> approvedDisposals;
 
-    // ✅ Required no-arg constructor
+    
     public User() {
     }
-
-    // ✅ Required parameterized constructor
     public User(String name,
                 String email,
                 String password,
