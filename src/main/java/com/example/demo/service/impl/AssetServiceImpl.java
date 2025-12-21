@@ -27,7 +27,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset createAsset(Long vendorId, Long ruleId, Asset asset) {
 
-        // ✅ NULL SAFETY (fixes warning)
+        
         if (vendorId == null || ruleId == null) {
             throw new IllegalArgumentException("VendorId and RuleId must not be null");
         }
