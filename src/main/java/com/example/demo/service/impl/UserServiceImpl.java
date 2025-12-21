@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
         Role userRole = roleRepository.findByName("USER")
                 .orElseThrow(() -> new ResourceNotFoundException("Role USER not found"));
 
-        // 🔴 NO password encoding anymore
         user.setRoles(Set.of(userRole));
         user.setCreatedAt(LocalDateTime.now());
 
