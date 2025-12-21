@@ -19,16 +19,13 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    // ✅ Required no-arg constructor
     public Role() {
     }
 
-    // ✅ Required parameterized constructor
+  
     public Role(String name) {
         this.name = name;
     }
-
-    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;

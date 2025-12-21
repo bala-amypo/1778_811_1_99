@@ -17,7 +17,7 @@ public class DepreciationRule {
     private Long id;
 
     private String ruleName;
-    private String method; // STRAIGHT_LINE / DECLINING_BALANCE
+    private String method; 
     private Integer usefulLifeYears;
     private Double salvageValue;
     private LocalDateTime createdAt;
@@ -26,11 +26,9 @@ public class DepreciationRule {
     @JsonIgnore
     private Set<Asset> assets;
 
-    // ✅ Required no-arg constructor
     public DepreciationRule() {
     }
 
-    // ✅ Required parameterized constructor
     public DepreciationRule(String ruleName,
                             String method,
                             Integer usefulLifeYears,
@@ -41,8 +39,6 @@ public class DepreciationRule {
         this.salvageValue = salvageValue;
         this.createdAt = LocalDateTime.now();
     }
-
-    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;

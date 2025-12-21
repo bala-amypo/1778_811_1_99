@@ -23,11 +23,9 @@ public class AssetLifecycleEvent {
     @JsonIgnore
     private Asset asset;
 
-    // ✅ Required no-arg constructor
     public AssetLifecycleEvent() {
     }
 
-    // ✅ Required parameterized constructor
     public AssetLifecycleEvent(Asset asset,
                                String eventType,
                                String eventDescription,
@@ -38,8 +36,6 @@ public class AssetLifecycleEvent {
         this.eventDate = eventDate;
         this.loggedAt = LocalDateTime.now();
     }
-
-    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;

@@ -48,8 +48,6 @@ public class Vendor {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ... getters and setters remain the same
-
 
     public Long getId() {
         return id;
