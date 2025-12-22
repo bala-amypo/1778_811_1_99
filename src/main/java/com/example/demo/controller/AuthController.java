@@ -11,13 +11,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody AuthRequest request) {
-        // Dummy implementation
+        
         return ResponseEntity.ok("User registered successfully");
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        // Dummy response with empty constructor
+        
         AuthResponse response = new AuthResponse();
         return ResponseEntity.ok(response);
     }
