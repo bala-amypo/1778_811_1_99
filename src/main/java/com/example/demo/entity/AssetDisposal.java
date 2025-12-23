@@ -22,10 +22,12 @@ public class AssetDisposal {
 
     @OneToOne
     @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Asset asset;
 
     @ManyToOne
     @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private User approvedBy;
 
     public AssetDisposal() {

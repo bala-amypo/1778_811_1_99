@@ -18,11 +18,13 @@ public class AssetLifecycleEvent {
     private String eventType;
     private String eventDescription;
     private LocalDate eventDate;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime loggedAt;
 
     @ManyToOne
     @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Asset asset;
 
     public AssetLifecycleEvent() {
