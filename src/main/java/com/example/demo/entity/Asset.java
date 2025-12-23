@@ -37,11 +37,10 @@ public class Asset {
     @OneToOne(mappedBy = "asset")
     private AssetDisposal disposal;
 
-    // ✅ Required no-arg constructor
+    
     public Asset() {
     }
 
-    // ✅ Required parameterized constructor
     public Asset(String assetTag, String assetName, Vendor vendor,
                  LocalDate purchaseDate, Double purchaseCost,
                  DepreciationRule depreciationRule) {
@@ -55,7 +54,6 @@ public class Asset {
         this.createdAt = LocalDateTime.now();
     }
 
-    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;

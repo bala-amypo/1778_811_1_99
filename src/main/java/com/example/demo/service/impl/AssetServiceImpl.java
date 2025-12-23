@@ -80,7 +80,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset getAsset(Long id) {
 
-        // ✅ NULL SAFETY (fixes warning)
+       
         if (id == null) {
             throw new IllegalArgumentException("Asset id must not be null");
         }

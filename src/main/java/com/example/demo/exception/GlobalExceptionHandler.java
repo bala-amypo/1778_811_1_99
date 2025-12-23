@@ -9,10 +9,10 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-//@RestControllerAdvice
+@RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // 400 — Bad request / validation errors
+    // 400 — Bad req \ validation errors
     @ExceptionHandler({
             IllegalArgumentException.class,
             BadRequestException.class
