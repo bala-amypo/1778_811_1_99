@@ -17,6 +17,7 @@ public class Vendor {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Column(name = "vendor_name", nullable = false, unique = true)
@@ -29,6 +30,8 @@ public class Vendor {
     private String phone;
     
     @Column(name = "created_at", updatable = false)
+    
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)   
     private LocalDateTime createdAt;
     
     @OneToMany(mappedBy = "vendor")
