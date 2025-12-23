@@ -1,5 +1,5 @@
 package com.example.demo.entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -14,12 +14,15 @@ public class DepreciationRule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String ruleName;
     private String method; 
     private Integer usefulLifeYears;
     private Double salvageValue;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "depreciationRule")

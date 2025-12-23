@@ -1,5 +1,5 @@
 package com.example.demo.entity;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,11 +12,13 @@ public class AssetLifecycleEvent {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String eventType;
     private String eventDescription;
     private LocalDate eventDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime loggedAt;
 
     @ManyToOne
