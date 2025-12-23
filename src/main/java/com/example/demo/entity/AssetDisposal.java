@@ -17,6 +17,7 @@ public class AssetDisposal {
     private String disposalMethod;
     private Double disposalValue;
     private LocalDate disposalDate;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
     @OneToOne

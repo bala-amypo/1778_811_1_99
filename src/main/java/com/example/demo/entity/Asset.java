@@ -15,6 +15,7 @@ public class Asset {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     private String assetTag;
@@ -22,12 +23,17 @@ public class Asset {
     private LocalDate purchaseDate;
     private Double purchaseCost;
     private String status;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime createdAt;
 
     @ManyToOne
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Vendor vendor;
 
     @ManyToOne
+    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DepreciationRule depreciationRule;
 
     @OneToMany(mappedBy = "asset")
@@ -35,6 +41,7 @@ public class Asset {
     private Set<AssetLifecycleEvent> lifecycleEvents;
 
     @OneToOne(mappedBy = "asset")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private AssetDisposal disposal;
 
     
