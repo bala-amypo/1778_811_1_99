@@ -38,7 +38,7 @@ public class Asset {
 
     @OneToMany(mappedBy = "asset")
     @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    
     private Set<AssetLifecycleEvent> lifecycleEvents;
 
     @OneToOne(mappedBy = "asset")
