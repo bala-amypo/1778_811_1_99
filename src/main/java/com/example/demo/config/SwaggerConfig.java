@@ -18,7 +18,7 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI customOpenAPI() {
 
-        // 🔐 JWT Bearer Security Scheme (optional if security removed)
+
         SecurityScheme bearerAuth = new SecurityScheme()
                 .name("Authorization")
                 .type(SecurityScheme.Type.HTTP)
@@ -26,30 +26,24 @@ public class SwaggerConfig {
                 .bearerFormat("JWT");
 
         return new OpenAPI()
-                // 📘 API Info
+                
                 .info(new Info()
                         .title("Asset Lifecycle Management API")
                         .description("API for managing assets, vendors, depreciation rules, lifecycle events, and disposals")
                         .version("1.0"))
 
-                // 🌐 Server URL (IMPORTANT for hosted Swagger)
+               
                 .servers(List.of(
                         new Server().url("https://9365.pro604cr.amypo.ai/")
                 ))
 
-                // 🔐 Apply JWT globally (Swagger UI only)
+                
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
 
-                // 🔧 Register security scheme
+                
                 .components(new Components()
-                        .addSecuritySchemes("bearerAuth", bearerAuth))
+                        .addSecuritySchemes("bearerAuth", bearerAuth));
 
-                // 🧭 Swagger UI Tags (for clean grouping)
-                .addTagsItem(new Tag().name("Auth").description("Authentication endpoints"))
-                .addTagsItem(new Tag().name("Assets").description("Asset management"))
-                .addTagsItem(new Tag().name("Vendors").description("Vendor management"))
-                .addTagsItem(new Tag().name("Depreciation Rules").description("Depreciation rule management"))
-                .addTagsItem(new Tag().name("Lifecycle Events").description("Asset lifecycle events"))
-                .addTagsItem(new Tag().name("Disposals").description("Asset disposal workflow"));
+                
     }
 }
