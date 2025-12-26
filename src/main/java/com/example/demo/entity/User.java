@@ -1,66 +1,38 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import java.util.*;
 
 @Entity
-@Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "email")
-})
-public class User {
+@Table(name = "users")
+public class User extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
-
-    private String name;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
-    @Column(nullable = false)
-    private String password; 
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime createdAt;
+    private String password;
+    private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "user_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+        name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
-    @OneToMany(mappedBy = "approvedBy")
-    @JsonIgnore
-    private Set<AssetDisposal> approvedDisposals;
-
-    
-    public User() {
+    public String getEmail() {
+        return email;
     }
-    public User(String name,
-                String email,
-                String password,
-                Set<Role> roles) {
-        this.name = name;
+
+    public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
         this.password = password;
-        this.roles = roles;
-        this.createdAt = LocalDateTime.now();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -71,43 +43,12 @@ public class User {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
- 
-    public void setEmail(String email) {
-        this.email = email;
-    }
- 
-    public String getPassword() {
-        return password;
-    }
- 
-    public void setPassword(String password) {
-        this.password = password;
-    }
- 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
- 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
- 
     public Set<Role> getRoles() {
         return roles;
     }
- 
+
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
-    public Set<AssetDisposal> getApprovedDisposals() {
-        return approvedDisposals;
-    }
-
-    public void setApprovedDisposals(Set<AssetDisposal> approvedDisposals) {
-        this.approvedDisposals = approvedDisposals;
-    }
 }
