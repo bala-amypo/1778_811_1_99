@@ -42,20 +42,31 @@ public class AuthController {
         return ResponseEntity.ok(userRepository.save(user));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> body) {
-        User user = userRepository.findByEmail(body.get("email"))
-                .orElseThrow();
+        @PostMapping("/login")
+        public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> request) {
 
-        Set<String> roles = new HashSet<>();
-        user.getRoles().forEach(r -> roles.add(r.getName()));
+        String email = request.get("email");
+        String password = request.get("password");
 
-        String token = jwtUtil.generateToken(
-                user.getEmail(),
-                user.getId(),
-                roles
-        );
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
-        return ResponseEntity.ok(Map.of("token", token));
-    }
+        // 🔐 THIS IS THE CRITICAL CHECK
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+                throw new BadRequestException("Invalid email or password");
+        }
+
+        Set<String> roles = user.getRoles()
+                .stream()
+                .map(Role::getName)
+                .collect(Collectors.toSet());
+
+        String token = jwtUtil.generateToken(user.getEmail(), user.getId(), roles);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", token);
+
+        return ResponseEntity.ok(response);
+        }
+
 }
