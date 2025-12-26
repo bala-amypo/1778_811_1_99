@@ -5,9 +5,14 @@ import java.time.LocalDate;
 
 @Entity
 public class AssetDisposal extends BaseEntity {
-
+    @NotBlank
     private String disposalMethod;
+
+    @NotBlank
+    @Positive
     private double disposalValue;
+
+    @NotBlank
     private LocalDate disposalDate;
 
     @ManyToOne
@@ -56,5 +61,5 @@ public class AssetDisposal extends BaseEntity {
         this.approvedBy = approvedBy;
     }
 
-    // getters & setters
+    
 }

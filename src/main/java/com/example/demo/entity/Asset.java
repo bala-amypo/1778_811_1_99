@@ -12,18 +12,23 @@ import org.hibernate.annotations.Proxy;
 public class Asset extends BaseEntity {
     @NotBlank
     private String assetTag;
+
     @NotBlank
     private String assetName;
-    
+
+    @NotNull
     @Positive
     private LocalDate purchaseDate;
+    
     @Positive
     private double purchaseCost;
+
     private String status = "ACTIVE";
 
     @ManyToOne
     private Vendor vendor;
 
+    @NotBlank
     @ManyToOne
     private DepreciationRule depreciationRule;
 

@@ -5,9 +5,11 @@ import java.time.LocalDate;
 
 @Entity
 public class AssetLifecycleEvent extends BaseEntity {
-
+    @NotBlank
     private String eventType;
+    @NotBlank
     private String eventDescription;
+    @
     private LocalDate eventDate;
 
     @ManyToOne
