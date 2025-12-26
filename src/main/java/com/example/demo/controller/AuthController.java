@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
+
+import java.util.stream.Collectors;
 
 import java.util.*;
 
@@ -45,28 +49,28 @@ public class AuthController {
         @PostMapping("/login")
         public ResponseEntity<Map<String, Object>> login(@RequestBody Map<String, String> request) {
 
-        String email = request.get("email");
-        String password = request.get("password");
+                String email = request.get("email");
+                String password = request.get("password");
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
+                User user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new ResourceNotFoundException("Invalid email or password"));
 
-        // 🔐 THIS IS THE CRITICAL CHECK
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-                throw new BadRequestException("Invalid email or password");
-        }
+                // 🔐 THIS IS THE CRITICAL CHECK
+                if (!passwordEncoder.matches(password, user.getPassword())) {
+                        throw new BadRequestException("Invalid email or password");
+                }
 
-        Set<String> roles = user.getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(Collectors.toSet());
+                Set<String> roles = user.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toSet());
 
-        String token = jwtUtil.generateToken(user.getEmail(), user.getId(), roles);
+                String token = jwtUtil.generateToken(user.getEmail(), user.getId(), roles);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
+                Map<String, Object> response = new HashMap<>();
+                response.put("token", token);
 
-        return ResponseEntity.ok(response);
+                return ResponseEntity.ok(response);
         }
 
 }
