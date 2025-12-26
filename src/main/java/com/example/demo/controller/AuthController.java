@@ -1,120 +1,55 @@
+// AssetController.java
 package com.example.demo.controller;
 
-import com.example.demo.entity.Role;
-import com.example.demo.entity.User;
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.RoleRepository;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.util.JwtUtil;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/assets")
+public class AssetController {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final JwtUtil jwtUtil;
+    private final AssetRepository assetRepository;
+    private final VendorRepository vendorRepository;
+    private final DepreciationRuleRepository ruleRepository;
 
-    public AuthController(
-            UserRepository userRepository,
-            RoleRepository roleRepository,
-            PasswordEncoder passwordEncoder,
-            JwtUtil jwtUtil
-    ) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.jwtUtil = jwtUtil;
+    public AssetController(AssetRepository assetRepository,
+                           VendorRepository vendorRepository,
+                           DepreciationRuleRepository ruleRepository) {
+        this.assetRepository = assetRepository;
+        this.vendorRepository = vendorRepository;
+        this.ruleRepository = ruleRepository;
     }
 
-    // ----------------------------------------------------------------
-    // REGISTER
-    // ----------------------------------------------------------------
-    @PostMapping("/register")
-    public ResponseEntity<Map<String, Object>> register(
-            @RequestBody Map<String, String> body
-    ) {
-        String email = body.get("email");
-        String password = body.get("password");
-        String name = body.get("name");
+    @PostMapping("/{vendorId}/{ruleId}")
+    public Asset create(@PathVariable Long vendorId,
+                        @PathVariable Long ruleId,
+                        @Valid @RequestBody Asset asset) {
 
-        if (email == null || password == null || name == null) {
-            throw new BadRequestException("Missing required fields");
-        }
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
+        DepreciationRule rule = ruleRepository.findById(ruleId).orElseThrow();
 
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new BadRequestException("Email already registered");
-        }
+        asset.setVendor(vendor);
+        asset.setDepreciationRule(rule);
 
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
-        user.setPassword(passwordEncoder.encode(password));
-
-        Role role = roleRepository.findByName("USER")
-                .orElseGet(() -> roleRepository.save(new Role("USER")));
-
-        user.getRoles().add(role);
-        User saved = userRepository.save(user);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("id", saved.getId());
-        response.put("email", saved.getEmail());
-        response.put("name", saved.getName());
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return assetRepository.save(asset);
     }
 
-    // ----------------------------------------------------------------
-    // LOGIN
-    // ----------------------------------------------------------------
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(
-            @RequestBody Map<String, String> request
-    ) {
-        String email = request.get("email");
-        String password = request.get("password");
+    @GetMapping
+    public List<Asset> getAll() {
+        return assetRepository.findAll();
+    }
 
-        if (email == null || password == null) {
-            throw new BadRequestException("Email and password required");
-        }
+    @GetMapping("/{id}")
+    public Asset getById(@PathVariable Long id) {
+        return assetRepository.findById(id).orElseThrow();
+    }
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Invalid email or password")
-                );
-
-        // 🔐 CRITICAL: this MUST block wrong passwords
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadRequestException("Invalid email or password");
-        }
-
-        Set<String> roles = user.getRoles()
-                .stream()
-                .map(Role::getName)
-                .collect(Collectors.toSet());
-
-        String token = jwtUtil.generateToken(
-                user.getEmail(),
-                user.getId(),
-                roles
-        );
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", token);
-
-        return ResponseEntity.ok(response);
+    @GetMapping("/status/{status}")
+    public List<Asset> getByStatus(@PathVariable String status) {
+        return assetRepository.findByStatus(status);
     }
 }

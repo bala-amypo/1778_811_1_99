@@ -1,8 +1,9 @@
+// DepreciationRuleController.java
 package com.example.demo.controller;
 
 import com.example.demo.entity.DepreciationRule;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.DepreciationRuleRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,10 +19,7 @@ public class DepreciationRuleController {
     }
 
     @PostMapping
-    public DepreciationRule create(@RequestBody DepreciationRule rule) {
-        if (rule.getRuleName() == null || rule.getMethod() == null) {
-            throw new BadRequestException("Invalid rule data");
-        }
+    public DepreciationRule create(@Valid @RequestBody DepreciationRule rule) {
         return ruleRepository.save(rule);
     }
 
