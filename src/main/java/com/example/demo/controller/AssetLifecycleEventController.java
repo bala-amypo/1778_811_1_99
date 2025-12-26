@@ -1,3 +1,6 @@
+// =======================
+// AssetLifecycleEventController.java
+// =======================
 package com.example.demo.controller;
 
 import com.example.demo.entity.Asset;
@@ -37,21 +40,28 @@ public class AssetLifecycleEventController {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
+        if (event.getEventDate() == null) {
+            throw new BadRequestException("Event date is required");
+        }
+
         if (event.getEventDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("Event date cannot be in the future");
         }
 
-        event.setAsset(asset);
-        AssetLifecycleEvent saved = eventRepository.save(event);
+        if (event.getEventDescription() == null || event.getEventDescription().isBlank()) {
+            throw new BadRequestException("Event description is required");
+        }
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        event.setAsset(asset);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(eventRepository.save(event));
     }
 
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
             @PathVariable Long assetId
     ) {
-        // optional safety check (tests accept both behaviors)
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
