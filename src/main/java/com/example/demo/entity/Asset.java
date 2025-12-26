@@ -1,5 +1,9 @@
 package com.example.demo.entity;
-
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Pattern;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import org.hibernate.annotations.Proxy;
@@ -19,7 +23,7 @@ public class Asset extends BaseEntity {
     @NotNull
     @Positive
     private LocalDate purchaseDate;
-    
+
     @Positive
     private double purchaseCost;
 
