@@ -23,11 +23,9 @@ public class DepreciationRuleServiceImpl implements DepreciationRuleService {
         if (rule.getUsefulLifeYears() <= 0) {
             throw new BadRequestException("Useful life must be greater than zero");
         }
-
         if (rule.getSalvageValue() < 0) {
             throw new BadRequestException("Salvage value cannot be negative");
         }
-
         return ruleRepository.save(rule);
     }
 
