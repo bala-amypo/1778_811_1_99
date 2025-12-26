@@ -22,7 +22,6 @@
     </properties>
 
     <dependencies>
-            <!-- 🧪 TestNG (REQUIRED for FullIntegrationTest) -->
     <dependency>
         <groupId>org.testng</groupId>
         <artifactId>testng</artifactId>
