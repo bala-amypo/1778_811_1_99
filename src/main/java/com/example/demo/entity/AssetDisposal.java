@@ -11,29 +11,21 @@ import jakarta.validation.constraints.PositiveOrZero;
 import java.time.LocalDate;
 
 @Entity
-public class AssetDisposal extends BaseEntity {
+@Table(name = "asset_disposal")
+public class AssetDisposal {
 
-    @NotBlank
-    @Column(nullable = false)
-    private String disposalMethod;
-
-    @PositiveOrZero
-    @Column(nullable = false)
-    private double disposalValue;
-
-    @NotNull
-    @Column(nullable = false)
-    private LocalDate disposalDate;
-
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "asset_id", nullable = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(
+        name = "asset_id",
+        nullable = false,
+        foreignKey = @ForeignKey(name = "FK_asset_disposal_asset")
+    )
     private Asset asset;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
-    @JoinColumn(name = "approved_by_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "approved_by_id")
     private User approvedBy;
+
 
     public String getDisposalMethod() {
         return disposalMethod;

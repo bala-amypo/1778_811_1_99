@@ -19,16 +19,16 @@ public class JwtUtil {
     );
 
     public String generateToken(String email, Long userId, Set<String> roles) {
-
-        return Jwts.builder()
-                .setSubject(email)
-                .claim("userId", userId)
-                .claim("roles", roles)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
-    }
+    return Jwts.builder()
+        .setSubject(email)                     // OK to keep
+        .claim("email", email)                 // 🔴 REQUIRED
+        .claim("userId", userId)               // 🔴 REQUIRED
+        .claim("roles", roles)                 // 🔴 REQUIRED
+        .setIssuedAt(new Date())
+        .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+        .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+        .compact();
+}
 
     public boolean validateToken(String token) {
         try {
@@ -39,11 +39,14 @@ public class JwtUtil {
         }
     }
 
+    
+
     public Claims getClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+            .setSigningKey(getSigningKey())
+            .build()
+            .parseClaimsJws(token)
+            .getBody();
     }
+
 }
