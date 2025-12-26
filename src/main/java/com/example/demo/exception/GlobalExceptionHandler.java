@@ -11,7 +11,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-
+    
     // 400 — Bad req \ validation errors
     @ExceptionHandler({
             IllegalArgumentException.class,
@@ -35,7 +35,11 @@ public class GlobalExceptionHandler {
                 "An unexpected error occurred"
         );
     }
-
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<String> handleDuplicate(DataIntegrityViolationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body("Duplicate value not allowed");
+    }
     private ResponseEntity<Map<String, Object>> buildResponse(
             HttpStatus status, String message) {
 
