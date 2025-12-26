@@ -1,5 +1,6 @@
 package com.example.demo.exception;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -39,6 +40,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDuplicate(DataIntegrityViolationException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body("Duplicate value not allowed");
+    }
+
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<String> handleValidation(MethodArgumentNotValidException ex) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body("Validation failed");
     }
     private ResponseEntity<Map<String, Object>> buildResponse(
             HttpStatus status, String message) {

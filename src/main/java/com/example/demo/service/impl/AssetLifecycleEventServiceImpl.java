@@ -22,6 +22,7 @@ public class AssetLifecycleEventServiceImpl implements AssetLifecycleEventServic
     public AssetLifecycleEvent logEvent(AssetLifecycleEvent event) {
         if (event.getEventDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("Event date cannot be in the future");
+            return ResponseEntity.badRequest().build();
         }
 
         if (event.getEventDescription() == null || event.getEventDescription().isBlank()) {
