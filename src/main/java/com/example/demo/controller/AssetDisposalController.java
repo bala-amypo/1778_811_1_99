@@ -16,7 +16,7 @@ public class AssetDisposalController {
 
     @PostMapping("/request/{assetId}")
     public AssetDisposal request(@PathVariable Long assetId,
-                                 @Valid @Valid @RequestBody AssetDisposal disposal) {
+                                 @Valid  @RequestBody AssetDisposal disposal) {
 
         Asset asset = assetRepository.findById(assetId).orElseThrow();
         disposal.setAsset(asset);

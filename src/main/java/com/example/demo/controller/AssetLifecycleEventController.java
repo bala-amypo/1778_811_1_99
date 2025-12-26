@@ -22,7 +22,7 @@ public class AssetLifecycleEventController {
 
     @PostMapping("/{assetId}")
     public AssetLifecycleEvent create(@PathVariable Long assetId,
-                                      @Valid @Valid @RequestBody AssetLifecycleEvent event) {
+                                      @Valid @RequestBody AssetLifecycleEvent event) {
 
         Asset asset = assetRepository.findById(assetId).orElseThrow();
         event.setAsset(asset);

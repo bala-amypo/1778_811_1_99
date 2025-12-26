@@ -34,7 +34,7 @@ public class AuthController {
     private JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@Valid @Valid @RequestBody Map<String, String> body) {
+    public ResponseEntity<User> register(@Valid @RequestBody Map<String, String> body) {
         User user = new User();
         user.setEmail(body.get("email"));
         user.setName(body.get("name"));
@@ -48,7 +48,7 @@ public class AuthController {
     }
 
         @PostMapping("/login")
-        public ResponseEntity<Map<String, Object>> login(@Valid @Valid @RequestBody Map<String, String> request) {
+        public ResponseEntity<Map<String, Object>> login(@Valid @RequestBody Map<String, String> request) {
 
                 String email = request.get("email");
                 String password = request.get("password");

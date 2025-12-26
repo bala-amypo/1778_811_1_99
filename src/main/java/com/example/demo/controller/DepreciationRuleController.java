@@ -16,7 +16,7 @@ public class DepreciationRuleController {
     private DepreciationRuleRepository ruleRepository;
 
     @PostMapping
-    public DepreciationRule create(@Valid @Valid @RequestBody DepreciationRule rule) {
+    public DepreciationRule create(@Valid @RequestBody DepreciationRule rule) {
         return ruleRepository.save(rule);
     }
 

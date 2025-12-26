@@ -19,7 +19,7 @@ public class AssetController {
     @PostMapping("/{vendorId}/{ruleId}")
     public Asset create(@PathVariable Long vendorId,
                         @PathVariable Long ruleId,
-                        @Valid @Valid @RequestBody Asset asset) {
+                        @Valid  @RequestBody Asset asset) {
 
         Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
         DepreciationRule rule = ruleRepository.findById(ruleId).orElseThrow();
