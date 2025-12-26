@@ -102,17 +102,23 @@
     <build>
         <plugins>
 
-            <!-- FORCE TestNG -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.5</version>
-                <configuration>
-                    <suiteXmlFiles>
-                        <suiteXmlFile>testng.xml</suiteXmlFile>
-                    </suiteXmlFiles>
-                </configuration>
-            </plugin>
+                    <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.2.5</version>
+            <configuration>
+                <!-- FORCE TestNG -->
+                <testNGArtifactName>org.testng:testng</testNGArtifactName>
+
+                <suiteXmlFiles>
+                    <suiteXmlFile>testng.xml</suiteXmlFile>
+                </suiteXmlFiles>
+
+                <!-- HARD DISABLE JUnit Platform -->
+                <useModulePath>false</useModulePath>
+            </configuration>
+        </plugin>
+
 
             <plugin>
                 <groupId>org.springframework.boot</groupId>
