@@ -1,21 +1,25 @@
 package com.example.demo.entity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Pattern;
 
 import jakarta.persistence.*;
-import java.util.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity {
+
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
+
     @NotBlank
+    @Column(nullable = false)
     private String password;
+
     @NotBlank
+    @Column(nullable = false)
     private String name;
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -25,6 +29,8 @@ public class User extends BaseEntity {
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    // getters & setters
 
     public String getEmail() {
         return email;
@@ -57,5 +63,4 @@ public class User extends BaseEntity {
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
-
 }

@@ -1,23 +1,31 @@
 package com.example.demo.entity;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Pattern;
-import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
 public class AssetLifecycleEvent extends BaseEntity {
+
     @NotBlank
+    @Column(nullable = false)
     private String eventType;
+
     @NotBlank
+    @Column(nullable = false)
     private String eventDescription;
-    @NotBlank
+
+    @NotNull
+    @Column(nullable = false)
     private LocalDate eventDate;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(optional = false)
     private Asset asset;
+
+    // getters & setters
 
     public String getEventType() {
         return eventType;
@@ -50,6 +58,4 @@ public class AssetLifecycleEvent extends BaseEntity {
     public void setAsset(Asset asset) {
         this.asset = asset;
     }
-
-    // getters & setters
 }
