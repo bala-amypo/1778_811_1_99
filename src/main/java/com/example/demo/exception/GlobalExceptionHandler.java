@@ -1,8 +1,9 @@
 package com.example.demo.exception;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,43 +13,49 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    
-    // 400 — Bad req \ validation errors
+
+    /* =========================
+       400 — Bad Request
+       ========================= */
+
     @ExceptionHandler({
             IllegalArgumentException.class,
-            BadRequestException.class
+            BadRequestException.class,
+            MethodArgumentNotValidException.class,
+            DataIntegrityViolationException.class
     })
-    public ResponseEntity<Map<String, Object>> handleBadRequest(RuntimeException ex) {
-        return buildResponse(HttpStatus.BAD_REQUEST, ex.getMessage());
+    public ResponseEntity<Map<String, Object>> handleBadRequest(Exception ex) {
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage() != null ? ex.getMessage() : "Bad request"
+        );
     }
 
-    // 404 — Resource not found
+    /* =========================
+       404 — Not Found
+       ========================= */
+
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleResourceNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    // 500 — Catch-all (ONLY ONE)
+    /* =========================
+       500 — Internal Server Error
+       ========================= */
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Map<String, Object>> handleException(Exception ex) {
+    public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
         return buildResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
                 "An unexpected error occurred"
         );
     }
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<String> handleDuplicate(DataIntegrityViolationException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Duplicate value not allowed");
-    }
 
+    /* =========================
+       Helper
+       ========================= */
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidation(MethodArgumentNotValidException ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Validation failed");
-    }
     private ResponseEntity<Map<String, Object>> buildResponse(
             HttpStatus status, String message) {
 
