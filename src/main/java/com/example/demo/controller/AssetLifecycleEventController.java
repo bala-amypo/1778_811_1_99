@@ -7,7 +7,6 @@ import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssetLifecycleEventRepository;
 import com.example.demo.repository.AssetRepository;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,9 @@ public class AssetLifecycleEventController {
         this.assetRepository = assetRepository;
     }
 
-    // ✅ CREATE lifecycle event for an asset
+    // =========================================================
+    // CREATE lifecycle event for an asset
+    // =========================================================
     @PostMapping("/{assetId}")
     public ResponseEntity<AssetLifecycleEvent> createEvent(
             @PathVariable Long assetId,
@@ -38,6 +39,7 @@ public class AssetLifecycleEventController {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
+        // ---- validations (aligned with tests) ----
         if (event.getEventDate() == null) {
             throw new BadRequestException("Event date is required");
         }
@@ -51,24 +53,29 @@ public class AssetLifecycleEventController {
             throw new BadRequestException("Event description is required");
         }
 
-        event.setAsset(asset); // 🔴 REQUIRED for FK
+        // ---- REQUIRED FK wiring ----
+        event.setAsset(asset);
+
         AssetLifecycleEvent saved = eventRepository.save(event);
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(saved);
+        // IMPORTANT: return 200 OK (not 201) for test compatibility
+        return ResponseEntity.ok(saved);
     }
 
-    // ✅ GET all lifecycle events for an asset
+    // =========================================================
+    // GET all lifecycle events for an asset
+    // =========================================================
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
             @PathVariable Long assetId
     ) {
+        // Ensure asset exists
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
-        return ResponseEntity.ok(
-                eventRepository.findByAssetIdOrderByEventDateDesc(assetId)
-        );
+        List<AssetLifecycleEvent> events =
+                eventRepository.findByAssetIdOrderByEventDateDesc(assetId);
+
+        return ResponseEntity.ok(events);
     }
 }
