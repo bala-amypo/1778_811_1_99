@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.Vendor;
-import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.VendorRepository;
 import com.example.demo.service.VendorService;
@@ -20,10 +19,6 @@ public class VendorServiceImpl implements VendorService {
 
     @Override
     public Vendor createVendor(Vendor vendor) {
-        if (vendor.getVendorName() == null || vendor.getVendorName().isBlank()) {
-            throw new BadRequestException("Vendor name cannot be empty");
-        }
-
         return vendorRepository.save(vendor);
     }
 
