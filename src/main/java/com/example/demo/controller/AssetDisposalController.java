@@ -1,36 +1,37 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.AssetDisposal;
-import com.example.demo.service.AssetDisposalService;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/disposals")
-public class AssetDisposalController{
+public class AssetDisposalController {
 
-    private final AssetDisposalService disposalService;
+    @Autowired private AssetDisposalRepository disposalRepository;
+    @Autowired private AssetRepository assetRepository;
+    @Autowired private UserRepository userRepository;
 
-    public AssetDisposalController(AssetDisposalService disposalService) {
-        this.disposalService = disposalService;
-    }
-
-    /**
-     * Request disposal for an asset
-     * POST /api/disposals/request/{assetId}
-     */
     @PostMapping("/request/{assetId}")
-    public AssetDisposal requestDisposal(@PathVariable Long assetId,
-                                         @RequestBody AssetDisposal disposal) {
-        return disposalService.requestDisposal(assetId, disposal);
+    public AssetDisposal request(@PathVariable Long assetId,
+                                 @RequestBody AssetDisposal disposal) {
+
+        Asset asset = assetRepository.findById(assetId).orElseThrow();
+        disposal.setAsset(asset);
+        return disposalRepository.save(disposal);
     }
 
-    /**
-     * Approve disposal (ADMIN only – enforced by security layer)
-     * PUT /api/disposals/approve/{disposalId}/{adminId}
-     */
-    @PutMapping("/approve/{disposalId}/{adminId}")
-    public AssetDisposal approveDisposal(@PathVariable Long disposalId,
-                                         @PathVariable Long adminId) {
-        return disposalService.approveDisposal(disposalId, adminId);
+    @PutMapping("/approve/{disposalId}/{userId}")
+    public AssetDisposal approve(@PathVariable Long disposalId,
+                                 @PathVariable Long userId) {
+
+        AssetDisposal disposal = disposalRepository.findById(disposalId).orElseThrow();
+        User approver = userRepository.findById(userId).orElseThrow();
+
+        disposal.setApprovedBy(approver);
+        disposal.getAsset().setStatus("DISPOSED");
+
+        return disposalRepository.save(disposal);
     }
 }

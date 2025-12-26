@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetLifecycleEvent;
-import com.example.demo.service.AssetLifecycleEventService;
+import com.example.demo.repository.AssetLifecycleEventRepository;
+import com.example.demo.repository.AssetRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,20 +13,23 @@ import java.util.List;
 @RequestMapping("/api/events")
 public class AssetLifecycleEventController {
 
-    private final AssetLifecycleEventService eventService;
+    @Autowired
+    private AssetLifecycleEventRepository eventRepository;
 
-    public AssetLifecycleEventController(AssetLifecycleEventService eventService) {
-        this.eventService = eventService;
-    }
+    @Autowired
+    private AssetRepository assetRepository;
 
     @PostMapping("/{assetId}")
-    public AssetLifecycleEvent logEvent(@PathVariable Long assetId,
-                                        @RequestBody AssetLifecycleEvent event) {
-        return eventService.logEvent(assetId, event);
+    public AssetLifecycleEvent create(@PathVariable Long assetId,
+                                      @RequestBody AssetLifecycleEvent event) {
+
+        Asset asset = assetRepository.findById(assetId).orElseThrow();
+        event.setAsset(asset);
+        return eventRepository.save(event);
     }
 
     @GetMapping("/asset/{assetId}")
-    public List<AssetLifecycleEvent> getEvents(@PathVariable Long assetId) {
-        return eventService.getEventsForAsset(assetId);
+    public List<AssetLifecycleEvent> getByAsset(@PathVariable Long assetId) {
+        return eventRepository.findByAssetIdOrderByEventDateDesc(assetId);
     }
 }

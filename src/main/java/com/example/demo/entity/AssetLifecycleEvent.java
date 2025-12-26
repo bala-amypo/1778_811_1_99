@@ -1,53 +1,17 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "asset_lifecycle_events")
-public class AssetLifecycleEvent {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+public class AssetLifecycleEvent extends BaseEntity {
 
     private String eventType;
     private String eventDescription;
     private LocalDate eventDate;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime loggedAt;
-
     @ManyToOne
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Asset asset;
-
-    public AssetLifecycleEvent() {
-    }
-
-    public AssetLifecycleEvent(Asset asset,
-                               String eventType,
-                               String eventDescription,
-                               LocalDate eventDate) {
-        this.asset = asset;
-        this.eventType = eventType;
-        this.eventDescription = eventDescription;
-        this.eventDate = eventDate;
-        this.loggedAt = LocalDateTime.now();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getEventType() {
         return eventType;
@@ -73,14 +37,6 @@ public class AssetLifecycleEvent {
         this.eventDate = eventDate;
     }
 
-    public LocalDateTime getLoggedAt() {
-        return loggedAt;
-    }
-
-    public void setLoggedAt(LocalDateTime loggedAt) {
-        this.loggedAt = loggedAt;
-    }
-
     public Asset getAsset() {
         return asset;
     }
@@ -88,4 +44,6 @@ public class AssetLifecycleEvent {
     public void setAsset(Asset asset) {
         this.asset = asset;
     }
+
+    // getters & setters
 }

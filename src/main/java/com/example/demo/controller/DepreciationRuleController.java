@@ -1,7 +1,8 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.DepreciationRule;
-import com.example.demo.service.DepreciationRuleService;
+import com.example.demo.repository.DepreciationRuleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,19 +11,16 @@ import java.util.List;
 @RequestMapping("/api/rules")
 public class DepreciationRuleController {
 
-    private final DepreciationRuleService ruleService;
-
-    public DepreciationRuleController(DepreciationRuleService ruleService) {
-        this.ruleService = ruleService;
-    }
+    @Autowired
+    private DepreciationRuleRepository ruleRepository;
 
     @PostMapping
-    public DepreciationRule createRule(@RequestBody DepreciationRule rule) {
-        return ruleService.createRule(rule);
+    public DepreciationRule create(@RequestBody DepreciationRule rule) {
+        return ruleRepository.save(rule);
     }
 
     @GetMapping
-    public List<DepreciationRule> getAllRules() {
-        return ruleService.getAllRules();
+    public List<DepreciationRule> getAll() {
+        return ruleRepository.findAll();
     }
 }

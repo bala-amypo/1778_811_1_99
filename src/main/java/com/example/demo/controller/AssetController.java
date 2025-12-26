@@ -1,40 +1,46 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Asset;
-import com.example.demo.service.AssetService;
+import com.example.demo.entity.*;
+import com.example.demo.repository.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/assets")
-public class AssetController{
+public class AssetController {
 
-    private final AssetService assetService;
-
-    public AssetController(AssetService assetService) {
-        this.assetService = assetService;
-    }
+    @Autowired private AssetRepository assetRepository;
+    @Autowired private VendorRepository vendorRepository;
+    @Autowired private DepreciationRuleRepository ruleRepository;
 
     @PostMapping("/{vendorId}/{ruleId}")
-    public Asset createAsset(@PathVariable Long vendorId,
-                             @PathVariable Long ruleId,
-                             @RequestBody Asset asset) {
-        return assetService.createAsset(vendorId, ruleId, asset);
+    public Asset create(@PathVariable Long vendorId,
+                        @PathVariable Long ruleId,
+                        @RequestBody Asset asset) {
+
+        Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
+        DepreciationRule rule = ruleRepository.findById(ruleId).orElseThrow();
+
+        asset.setVendor(vendor);
+        asset.setDepreciationRule(rule);
+
+        return assetRepository.save(asset);
     }
 
     @GetMapping
-    public List<Asset> getAllAssets() {
-        return assetService.getAllAssets();
-    }
-
-    @GetMapping("/status/{status}")
-    public List<Asset> getAssetsByStatus(@PathVariable String status) {
-        return assetService.getAssetsByStatus(status);
+    public List<Asset> getAll() {
+        return assetRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    public Asset getAsset(@PathVariable Long id) {
-        return assetService.getAsset(id);
+    public Asset getById(@PathVariable Long id) {
+        return assetRepository.findById(id).orElseThrow();
+    }
+
+    @GetMapping("/status/{status}")
+    public List<Asset> getByStatus(@PathVariable String status) {
+        return assetRepository.findByStatus(status);
     }
 }

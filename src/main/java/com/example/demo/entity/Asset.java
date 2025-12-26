@@ -1,75 +1,25 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "assets", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "assetTag")
-})
-public class Asset {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+@Table(
+    uniqueConstraints = @UniqueConstraint(columnNames = "assetTag")
+)
+public class Asset extends BaseEntity {
 
     private String assetTag;
     private String assetName;
     private LocalDate purchaseDate;
-    private Double purchaseCost;
-    private String status;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime createdAt;
+    private double purchaseCost;
+    private String status = "ACTIVE";
 
     @ManyToOne
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Vendor vendor;
 
     @ManyToOne
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private DepreciationRule depreciationRule;
-
-    @OneToMany(mappedBy = "asset")
-    @JsonIgnore
-    
-    private Set<AssetLifecycleEvent> lifecycleEvents;
-
-    @OneToOne(mappedBy = "asset")
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private AssetDisposal disposal;
-
-    
-    public Asset() {
-    }
-
-    public Asset(String assetTag, String assetName, Vendor vendor,
-                 LocalDate purchaseDate, Double purchaseCost,
-                 DepreciationRule depreciationRule) {
-        this.assetTag = assetTag;
-        this.assetName = assetName;
-        this.vendor = vendor;
-        this.purchaseDate = purchaseDate;
-        this.purchaseCost = purchaseCost;
-        this.depreciationRule = depreciationRule;
-        this.status = "ACTIVE";
-        this.createdAt = LocalDateTime.now();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getAssetTag() {
         return assetTag;
@@ -95,11 +45,11 @@ public class Asset {
         this.purchaseDate = purchaseDate;
     }
 
-    public Double getPurchaseCost() {
+    public double getPurchaseCost() {
         return purchaseCost;
     }
 
-    public void setPurchaseCost(Double purchaseCost) {
+    public void setPurchaseCost(double purchaseCost) {
         this.purchaseCost = purchaseCost;
     }
 
@@ -109,14 +59,6 @@ public class Asset {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Vendor getVendor() {
@@ -135,19 +77,5 @@ public class Asset {
         this.depreciationRule = depreciationRule;
     }
 
-    public Set<AssetLifecycleEvent> getLifecycleEvents() {
-        return lifecycleEvents;
-    }
-
-    public void setLifecycleEvents(Set<AssetLifecycleEvent> lifecycleEvents) {
-        this.lifecycleEvents = lifecycleEvents;
-    }
-
-    public AssetDisposal getDisposal() {
-        return disposal;
-    }
-
-    public void setDisposal(AssetDisposal disposal) {
-        this.disposal = disposal;
-    }
+    
 }

@@ -1,59 +1,20 @@
 package com.example.demo.entity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "asset_disposals")
-public class AssetDisposal {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AssetDisposal extends BaseEntity {
 
     private String disposalMethod;
-    private Double disposalValue;
+    private double disposalValue;
     private LocalDate disposalDate;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private LocalDateTime createdAt;
 
-    @OneToOne
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @ManyToOne
     private Asset asset;
 
     @ManyToOne
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private User approvedBy;
-
-    public AssetDisposal() {
-    }
-
-    public AssetDisposal(Asset asset,
-                         String disposalMethod,
-                         Double disposalValue,
-                         LocalDate disposalDate,
-                         User approvedBy) {
-        this.asset = asset;
-        this.disposalMethod = disposalMethod;
-        this.disposalValue = disposalValue;
-        this.disposalDate = disposalDate;
-        this.approvedBy = approvedBy;
-        this.createdAt = LocalDateTime.now();
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getDisposalMethod() {
         return disposalMethod;
@@ -63,11 +24,11 @@ public class AssetDisposal {
         this.disposalMethod = disposalMethod;
     }
 
-    public Double getDisposalValue() {
+    public double getDisposalValue() {
         return disposalValue;
     }
 
-    public void setDisposalValue(Double disposalValue) {
+    public void setDisposalValue(double disposalValue) {
         this.disposalValue = disposalValue;
     }
 
@@ -77,14 +38,6 @@ public class AssetDisposal {
 
     public void setDisposalDate(LocalDate disposalDate) {
         this.disposalDate = disposalDate;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public Asset getAsset() {
@@ -102,4 +55,6 @@ public class AssetDisposal {
     public void setApprovedBy(User approvedBy) {
         this.approvedBy = approvedBy;
     }
+
+    // getters & setters
 }
