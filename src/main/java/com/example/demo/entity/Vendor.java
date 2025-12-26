@@ -16,7 +16,9 @@ public class Vendor extends BaseEntity {
     @NotBlank
     @Column(nullable = false)
     private String contactEmail;
-
+    
+    
+    
     public String getVendorName() {
         return vendorName;
     }
