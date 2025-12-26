@@ -1,8 +1,6 @@
-// =======================
-// AssetDisposal.java
-// =======================
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,18 +12,40 @@ import java.time.LocalDate;
 @Table(name = "asset_disposal")
 public class AssetDisposal {
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Column(nullable = false)
+    private String disposalMethod;
+
+    @PositiveOrZero
+    @Column(nullable = false)
+    private double disposalValue;
+
+    @NotNull
+    @Column(nullable = false)
+    private LocalDate disposalDate;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "asset_id",
-        nullable = false,
-        foreignKey = @ForeignKey(name = "FK_asset_disposal_asset")
+            name = "asset_id",
+            nullable = false,
+            foreignKey = @ForeignKey(name = "FK_asset_disposal_asset")
     )
+    @JsonIgnore
     private Asset asset;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "approved_by_id")
+    @JoinColumn(name = "approved_by_id", nullable = false)
     private User approvedBy;
 
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
+    }
 
     public String getDisposalMethod() {
         return disposalMethod;

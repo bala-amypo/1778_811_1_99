@@ -1,6 +1,3 @@
-// =======================
-// AssetLifecycleEventController.java
-// =======================
 package com.example.demo.controller;
 
 import com.example.demo.entity.Asset;
@@ -32,27 +29,9 @@ public class AssetLifecycleEventController {
         this.assetRepository = assetRepository;
     }
 
-
-        @PostMapping("/api/events/{assetId}")
-        public ResponseEntity<AssetLifecycleEvent> createEvent(
-                @PathVariable Long assetId,
-                @RequestBody AssetLifecycleEvent event) {
-
-        Asset asset = assetRepository.findById(assetId)
-                .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
-
-        if (event.getEventDate().isAfter(LocalDate.now())) {
-                throw new BadRequestException("Event date cannot be in the future");
-        }
-
-        event.setAsset(asset);              // 🔴 REQUIRED
-        AssetLifecycleEvent saved = eventRepository.save(event);
-
-        return ResponseEntity.ok(saved);
-        }
-
+    // ✅ CREATE lifecycle event for an asset
     @PostMapping("/{assetId}")
-    public ResponseEntity<AssetLifecycleEvent> create(
+    public ResponseEntity<AssetLifecycleEvent> createEvent(
             @PathVariable Long assetId,
             @Valid @RequestBody AssetLifecycleEvent event
     ) {
@@ -67,16 +46,20 @@ public class AssetLifecycleEventController {
             throw new BadRequestException("Event date cannot be in the future");
         }
 
-        if (event.getEventDescription() == null || event.getEventDescription().isBlank()) {
+        if (event.getEventDescription() == null ||
+            event.getEventDescription().isBlank()) {
             throw new BadRequestException("Event description is required");
         }
 
-        event.setAsset(asset);
+        event.setAsset(asset); // 🔴 REQUIRED for FK
+        AssetLifecycleEvent saved = eventRepository.save(event);
+
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(eventRepository.save(event));
+                .body(saved);
     }
 
+    // ✅ GET all lifecycle events for an asset
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
             @PathVariable Long assetId
