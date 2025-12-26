@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import jakarta.validation.Valid;
 
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetLifecycleEvent;
@@ -21,7 +22,7 @@ public class AssetLifecycleEventController {
 
     @PostMapping("/{assetId}")
     public AssetLifecycleEvent create(@PathVariable Long assetId,
-                                      @RequestBody AssetLifecycleEvent event) {
+                                      @Valid @Valid @RequestBody AssetLifecycleEvent event) {
 
         Asset asset = assetRepository.findById(assetId).orElseThrow();
         event.setAsset(asset);

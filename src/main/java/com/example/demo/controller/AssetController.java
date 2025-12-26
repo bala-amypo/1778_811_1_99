@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import jakarta.validation.Valid;
 
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -18,7 +19,7 @@ public class AssetController {
     @PostMapping("/{vendorId}/{ruleId}")
     public Asset create(@PathVariable Long vendorId,
                         @PathVariable Long ruleId,
-                        @RequestBody Asset asset) {
+                        @Valid @Valid @RequestBody Asset asset) {
 
         Vendor vendor = vendorRepository.findById(vendorId).orElseThrow();
         DepreciationRule rule = ruleRepository.findById(ruleId).orElseThrow();

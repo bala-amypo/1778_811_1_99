@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import jakarta.validation.Valid;
 
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
@@ -15,7 +16,7 @@ public class AssetDisposalController {
 
     @PostMapping("/request/{assetId}")
     public AssetDisposal request(@PathVariable Long assetId,
-                                 @RequestBody AssetDisposal disposal) {
+                                 @Valid @Valid @RequestBody AssetDisposal disposal) {
 
         Asset asset = assetRepository.findById(assetId).orElseThrow();
         disposal.setAsset(asset);

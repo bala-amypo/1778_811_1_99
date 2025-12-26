@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import jakarta.validation.Valid;
 
 import com.example.demo.entity.DepreciationRule;
 import com.example.demo.repository.DepreciationRuleRepository;
@@ -15,7 +16,7 @@ public class DepreciationRuleController {
     private DepreciationRuleRepository ruleRepository;
 
     @PostMapping
-    public DepreciationRule create(@RequestBody DepreciationRule rule) {
+    public DepreciationRule create(@Valid @Valid @RequestBody DepreciationRule rule) {
         return ruleRepository.save(rule);
     }
 

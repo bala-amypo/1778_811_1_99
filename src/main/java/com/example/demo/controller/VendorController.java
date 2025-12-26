@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import jakarta.validation.Valid;
 
 import com.example.demo.entity.Vendor;
 import com.example.demo.repository.VendorRepository;
@@ -15,7 +16,7 @@ public class VendorController {
     private VendorRepository vendorRepository;
 
     @PostMapping
-    public Vendor create(@RequestBody Vendor vendor) {
+    public Vendor create(@Valid @RequestBody Vendor vendor) {
         return vendorRepository.save(vendor);
     }
 
