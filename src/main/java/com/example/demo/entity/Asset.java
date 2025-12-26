@@ -2,11 +2,13 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
+import org.hibernate.annotations.Proxy;
+@Proxy(lazy = false)
 @Entity
 @Table(
     uniqueConstraints = @UniqueConstraint(columnNames = "assetTag")
 )
+
 public class Asset extends BaseEntity {
 
     private String assetTag;

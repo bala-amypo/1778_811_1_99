@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(
     uniqueConstraints = @UniqueConstraint(columnNames = "vendorName")
 )
+@Proxy(lazy = false)
 public class Vendor extends BaseEntity {
 
     private String vendorName;
