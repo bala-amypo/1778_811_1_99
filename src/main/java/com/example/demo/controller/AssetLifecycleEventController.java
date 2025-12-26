@@ -32,6 +32,25 @@ public class AssetLifecycleEventController {
         this.assetRepository = assetRepository;
     }
 
+
+        @PostMapping("/api/events/{assetId}")
+        public ResponseEntity<AssetLifecycleEvent> createEvent(
+                @PathVariable Long assetId,
+                @RequestBody AssetLifecycleEvent event) {
+
+        Asset asset = assetRepository.findById(assetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
+
+        if (event.getEventDate().isAfter(LocalDate.now())) {
+                throw new BadRequestException("Event date cannot be in the future");
+        }
+
+        event.setAsset(asset);              // 🔴 REQUIRED
+        AssetLifecycleEvent saved = eventRepository.save(event);
+
+        return ResponseEntity.ok(saved);
+        }
+
     @PostMapping("/{assetId}")
     public ResponseEntity<AssetLifecycleEvent> create(
             @PathVariable Long assetId,
