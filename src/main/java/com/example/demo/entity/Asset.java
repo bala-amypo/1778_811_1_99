@@ -1,18 +1,15 @@
+// Asset.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.Proxy;
-
-@Proxy(lazy = false)
 @Entity
 @Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "assetTag")
+        name = "assets",
+        uniqueConstraints = @UniqueConstraint(columnNames = "assetTag")
 )
 public class Asset extends BaseEntity {
 
@@ -32,18 +29,15 @@ public class Asset extends BaseEntity {
     @Column(nullable = false)
     private double purchaseCost;
 
+    @NotBlank
     @Column(nullable = false)
     private String status = "ACTIVE";
 
-    @NotNull
     @ManyToOne(optional = false)
     private Vendor vendor;
 
-    @NotNull
     @ManyToOne(optional = false)
     private DepreciationRule depreciationRule;
-
-    // getters & setters
 
     public String getAssetTag() {
         return assetTag;

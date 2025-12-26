@@ -1,3 +1,4 @@
+// AssetLifecycleEventServiceImpl.java
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.AssetLifecycleEvent;
@@ -20,15 +21,19 @@ public class AssetLifecycleEventServiceImpl implements AssetLifecycleEventServic
 
     @Override
     public AssetLifecycleEvent logEvent(AssetLifecycleEvent event) {
+
         if (event.getEventDate() == null) {
             throw new BadRequestException("Event date is required");
         }
+
         if (event.getEventDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("Event date cannot be in the future");
         }
+
         if (event.getEventDescription() == null || event.getEventDescription().isBlank()) {
             throw new BadRequestException("Event description is required");
         }
+
         return eventRepository.save(event);
     }
 

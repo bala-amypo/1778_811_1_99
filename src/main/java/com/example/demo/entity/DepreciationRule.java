@@ -1,17 +1,13 @@
+// DepreciationRule.java
 package com.example.demo.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 @Entity
 @Table(
-    uniqueConstraints = @UniqueConstraint(columnNames = "ruleName")
+        name = "depreciation_rules",
+        uniqueConstraints = @UniqueConstraint(columnNames = "ruleName")
 )
 public class DepreciationRule extends BaseEntity {
 
@@ -31,8 +27,6 @@ public class DepreciationRule extends BaseEntity {
     @PositiveOrZero
     @Column(nullable = false)
     private double salvageValue;
-
-    // ---------- Getters & Setters ----------
 
     public String getRuleName() {
         return ruleName;
