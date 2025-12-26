@@ -1,29 +1,36 @@
 package com.example.demo.entity;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Pattern;
-import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity
 public class AssetDisposal extends BaseEntity {
+
     @NotBlank
+    @Column(nullable = false)
     private String disposalMethod;
 
-    @NotBlank
-    @Positive
+    @PositiveOrZero
+    @Column(nullable = false)
     private double disposalValue;
 
-    @NotBlank
+    @NotNull
+    @Column(nullable = false)
     private LocalDate disposalDate;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(optional = false)
     private Asset asset;
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(optional = false)
     private User approvedBy;
+
+    // getters & setters
 
     public String getDisposalMethod() {
         return disposalMethod;
@@ -64,6 +71,4 @@ public class AssetDisposal extends BaseEntity {
     public void setApprovedBy(User approvedBy) {
         this.approvedBy = approvedBy;
     }
-
-    
 }

@@ -1,40 +1,49 @@
 package com.example.demo.entity;
+
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Pattern;
-import jakarta.persistence.*;
+
 import java.time.LocalDate;
+
 import org.hibernate.annotations.Proxy;
+
 @Proxy(lazy = false)
 @Entity
 @Table(
     uniqueConstraints = @UniqueConstraint(columnNames = "assetTag")
 )
-
 public class Asset extends BaseEntity {
+
     @NotBlank
+    @Column(nullable = false, unique = true)
     private String assetTag;
 
     @NotBlank
+    @Column(nullable = false)
     private String assetName;
 
     @NotNull
-    @Positive
+    @Column(nullable = false)
     private LocalDate purchaseDate;
 
     @Positive
+    @Column(nullable = false)
     private double purchaseCost;
 
+    @Column(nullable = false)
     private String status = "ACTIVE";
 
-    @ManyToOne
+    @NotNull
+    @ManyToOne(optional = false)
     private Vendor vendor;
 
-    @NotBlank
-    @ManyToOne
+    @NotNull
+    @ManyToOne(optional = false)
     private DepreciationRule depreciationRule;
+
+    // getters & setters
 
     public String getAssetTag() {
         return assetTag;
@@ -91,6 +100,4 @@ public class Asset extends BaseEntity {
     public void setDepreciationRule(DepreciationRule depreciationRule) {
         this.depreciationRule = depreciationRule;
     }
-
-    
 }
