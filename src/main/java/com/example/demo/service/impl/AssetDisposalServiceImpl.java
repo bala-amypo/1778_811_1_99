@@ -2,6 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.entity.AssetDisposal;
 import com.example.demo.entity.User;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssetDisposalRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.AssetDisposalService;
@@ -29,7 +30,8 @@ public class AssetDisposalServiceImpl implements AssetDisposalService {
     @Override
     public List<AssetDisposal> findByApprover(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("User not found with id: " + userId));
         return disposalRepository.findByApprovedBy(user);
     }
 }
