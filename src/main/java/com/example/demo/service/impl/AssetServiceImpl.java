@@ -23,7 +23,6 @@ public class AssetServiceImpl implements AssetService {
         if (asset.getPurchaseCost() < 0) {
             throw new BadRequestException("Purchase cost cannot be negative");
         }
-
         return assetRepository.save(asset);
     }
 
