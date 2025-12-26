@@ -1,19 +1,10 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.AssetDisposal;
-import org.springframework.lang.NonNull;
+
+import java.util.List;
 
 public interface AssetDisposalService {
-
-    @NonNull
-    AssetDisposal requestDisposal(
-            @NonNull Long assetId,
-            @NonNull AssetDisposal disposal
-    );
-
-    @NonNull
-    AssetDisposal approveDisposal(
-            @NonNull Long disposalId,
-            @NonNull Long adminId
-    );
+    AssetDisposal requestDisposal(AssetDisposal disposal);
+    List<AssetDisposal> findByApprover(Long userId);
 }
