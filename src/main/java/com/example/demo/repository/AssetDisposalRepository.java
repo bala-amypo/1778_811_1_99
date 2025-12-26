@@ -12,7 +12,7 @@ import java.util.List;
 public interface AssetDisposalRepository
         extends JpaRepository<AssetDisposal, Long> {
 
-    @Transactional
+    @Transactional(readOnly = false) // 🔴 FORCE FLUSH
     @Query("SELECT d FROM AssetDisposal d WHERE d.approvedBy = :user")
     List<AssetDisposal> findByApprovedBy(@Param("user") User user);
 }
