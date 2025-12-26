@@ -16,7 +16,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        // No-op filter (JWT validation can be added later)
+        
         filterChain.doFilter(request, response);
     }
 }

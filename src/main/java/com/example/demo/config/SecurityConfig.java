@@ -27,21 +27,21 @@ public class SecurityConfig {
             .sessionManagement(sm ->
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                // ✅ PUBLIC ENDPOINTS (tests require this)
+                
                 .requestMatchers(
                         "/auth/**",
                         "/swagger-ui/**",
                         "/v3/api-docs/**"
                 ).permitAll()
 
-                // 🔒 PROTECTED API
+                
                 .requestMatchers("/api/**").authenticated()
 
-                // everything else
+                
                 .anyRequest().authenticated()
             );
 
-        // ✅ JWT enforcement
+        
         http.addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
