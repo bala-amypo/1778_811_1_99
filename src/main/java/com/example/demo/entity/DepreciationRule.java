@@ -1,13 +1,13 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Proxy;
+
 
 @Entity
 @Table(
     uniqueConstraints = @UniqueConstraint(columnNames = "ruleName")
 )
-@Proxy(lazy = false)
+
 public class DepreciationRule extends BaseEntity {
 
     private String ruleName;
