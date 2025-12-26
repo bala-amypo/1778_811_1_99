@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -51,17 +52,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         var claims = jwtUtil.getClaims(token);
         String email = claims.getSubject();
 
-        // 🔑 Extract roles from JWT
         List<String> roles = claims.get("roles", List.class);
 
-        // 🔁 Convert ADMIN → ROLE_ADMIN (required for Spring Security)
-        Collection<GrantedAuthority> authorities =
-                roles.stream()
-                     .map(role -> role.startsWith("ROLE_")
-                             ? role
-                             : "ROLE_" + role)
-                     .map(SimpleGrantedAuthority::new)
-                     .toList();
+        // ✅ FIXED: explicit collection to avoid generic mismatch
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        for (String role : roles) {
+            if (!role.startsWith("ROLE_")) {
+                role = "ROLE_" + role;
+            }
+            authorities.add(new SimpleGrantedAuthority(role));
+        }
 
         UsernamePasswordAuthenticationToken authentication =
                 new UsernamePasswordAuthenticationToken(
