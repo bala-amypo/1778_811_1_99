@@ -9,11 +9,17 @@ import jakarta.persistence.*;
 )
 
 public class DepreciationRule extends BaseEntity {
-
+    @NotBlank
     private String ruleName;
+    @NotBlank
     private String method;
+    @NotBlank
+    @Positive
     private int usefulLifeYears;
+    @NotBlank
+    @NotBlank
     private double salvageValue;
+    
     public String getRuleName() {
         return ruleName;
     }

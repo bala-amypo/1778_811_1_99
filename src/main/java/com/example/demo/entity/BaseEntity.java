@@ -9,7 +9,7 @@ public abstract class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;
-
+    
     protected LocalDateTime createdAt = LocalDateTime.now();
 
     public Long getId() { return id; }

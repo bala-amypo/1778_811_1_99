@@ -9,7 +9,7 @@ public class AssetLifecycleEvent extends BaseEntity {
     private String eventType;
     @NotBlank
     private String eventDescription;
-    @
+    @NotBlank
     private LocalDate eventDate;
 
     @ManyToOne
