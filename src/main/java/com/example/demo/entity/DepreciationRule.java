@@ -1,4 +1,9 @@
 package com.example.demo.entity;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Pattern;
 
 import jakarta.persistence.*;
 
@@ -12,6 +17,7 @@ public class DepreciationRule extends BaseEntity {
     @NotBlank
     private String ruleName;
     @NotBlank
+    @Pattern(regexp = "STRAIGHT_LINE|DECLINING_BALANCE")
     private String method;
     @NotBlank
     @Positive
@@ -19,7 +25,7 @@ public class DepreciationRule extends BaseEntity {
     @NotBlank
     @NotBlank
     private double salvageValue;
-    
+
     public String getRuleName() {
         return ruleName;
     }

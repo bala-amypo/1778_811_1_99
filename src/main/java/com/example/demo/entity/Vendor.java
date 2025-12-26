@@ -9,8 +9,9 @@ import jakarta.persistence.*;
 )
 
 public class Vendor extends BaseEntity {
-
+    @NotBlank
     private String vendorName;
+    @NotBlank
     private String contactEmail;
     public String getVendorName() {
         return vendorName;
