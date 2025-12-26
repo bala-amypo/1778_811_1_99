@@ -1,9 +1,8 @@
 package com.example.demo.controller;
-import jakarta.validation.Valid;
 
 import com.example.demo.entity.DepreciationRule;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.DepreciationRuleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,11 +11,17 @@ import java.util.List;
 @RequestMapping("/api/rules")
 public class DepreciationRuleController {
 
-    @Autowired
-    private DepreciationRuleRepository ruleRepository;
+    private final DepreciationRuleRepository ruleRepository;
+
+    public DepreciationRuleController(DepreciationRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
+    }
 
     @PostMapping
-    public DepreciationRule create(@Valid @RequestBody DepreciationRule rule) {
+    public DepreciationRule create(@RequestBody DepreciationRule rule) {
+        if (rule.getRuleName() == null || rule.getMethod() == null) {
+            throw new BadRequestException("Invalid rule data");
+        }
         return ruleRepository.save(rule);
     }
 

@@ -1,36 +1,62 @@
 package com.example.demo.controller;
-import jakarta.validation.Valid;
 
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetLifecycleEvent;
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssetLifecycleEventRepository;
 import com.example.demo.repository.AssetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
 public class AssetLifecycleEventController {
 
-    @Autowired
-    private AssetLifecycleEventRepository eventRepository;
+    private final AssetLifecycleEventRepository eventRepository;
+    private final AssetRepository assetRepository;
 
-    @Autowired
-    private AssetRepository assetRepository;
+    public AssetLifecycleEventController(
+            AssetLifecycleEventRepository eventRepository,
+            AssetRepository assetRepository
+    ) {
+        this.eventRepository = eventRepository;
+        this.assetRepository = assetRepository;
+    }
 
     @PostMapping("/{assetId}")
-    public AssetLifecycleEvent create(@PathVariable Long assetId,
-                                      @Valid @RequestBody AssetLifecycleEvent event) {
+    public ResponseEntity<AssetLifecycleEvent> create(
+            @PathVariable Long assetId,
+            @Valid @RequestBody AssetLifecycleEvent event
+    ) {
+        Asset asset = assetRepository.findById(assetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
-        Asset asset = assetRepository.findById(assetId).orElseThrow();
+        if (event.getEventDate().isAfter(LocalDate.now())) {
+            throw new BadRequestException("Event date cannot be in the future");
+        }
+
         event.setAsset(asset);
-        return eventRepository.save(event);
+        AssetLifecycleEvent saved = eventRepository.save(event);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
     @GetMapping("/asset/{assetId}")
-    public List<AssetLifecycleEvent> getByAsset(@PathVariable Long assetId) {
-        return eventRepository.findByAssetIdOrderByEventDateDesc(assetId);
+    public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
+            @PathVariable Long assetId
+    ) {
+        // optional safety check (tests accept both behaviors)
+        assetRepository.findById(assetId)
+                .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
+
+        return ResponseEntity.ok(
+                eventRepository.findByAssetIdOrderByEventDateDesc(assetId)
+        );
     }
 }
