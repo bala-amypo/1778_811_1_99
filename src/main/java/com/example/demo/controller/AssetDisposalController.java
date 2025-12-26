@@ -1,3 +1,6 @@
+// =======================
+// AssetDisposalController.java
+// =======================
 package com.example.demo.controller;
 
 import com.example.demo.entity.Asset;
@@ -41,14 +44,18 @@ public class AssetDisposalController {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
+        if (disposal.getDisposalDate() == null) {
+            throw new BadRequestException("Disposal date is required");
+        }
+
         if (disposal.getDisposalDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("Disposal date cannot be in the future");
         }
 
         disposal.setAsset(asset);
-        AssetDisposal saved = disposalRepository.save(disposal);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(disposalRepository.save(disposal));
     }
 
     @PutMapping("/approve/{disposalId}/{userId}")
@@ -63,7 +70,10 @@ public class AssetDisposalController {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         disposal.setApprovedBy(approver);
-        disposal.getAsset().setStatus("DISPOSED");
+
+        Asset asset = disposal.getAsset();
+        asset.setStatus("DISPOSED");
+        assetRepository.save(asset);
 
         return ResponseEntity.ok(disposalRepository.save(disposal));
     }

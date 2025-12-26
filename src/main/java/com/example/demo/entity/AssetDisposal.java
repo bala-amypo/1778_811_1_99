@@ -1,3 +1,6 @@
+// =======================
+// AssetDisposal.java
+// =======================
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
@@ -23,14 +26,14 @@ public class AssetDisposal extends BaseEntity {
     private LocalDate disposalDate;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "asset_id", nullable = false)
     private Asset asset;
 
     @NotNull
-    @ManyToOne(optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "approved_by_id", nullable = false)
     private User approvedBy;
-
-    // getters & setters
 
     public String getDisposalMethod() {
         return disposalMethod;
