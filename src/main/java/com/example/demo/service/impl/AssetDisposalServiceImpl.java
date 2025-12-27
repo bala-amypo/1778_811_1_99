@@ -1,7 +1,6 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.AssetDisposal;
-import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AssetDisposalRepository;
 import com.example.demo.repository.UserRepository;
@@ -16,22 +15,21 @@ public class AssetDisposalServiceImpl implements AssetDisposalService {
     private final AssetDisposalRepository disposalRepository;
     private final UserRepository userRepository;
 
-    public AssetDisposalServiceImpl(AssetDisposalRepository disposalRepository,
-                                    UserRepository userRepository) {
+    public AssetDisposalServiceImpl(
+            AssetDisposalRepository disposalRepository,
+            UserRepository userRepository
+    ) {
         this.disposalRepository = disposalRepository;
         this.userRepository = userRepository;
     }
 
     @Override
-    public AssetDisposal requestDisposal(AssetDisposal disposal) {
-        return disposalRepository.save(disposal);
-    }
+    public List<AssetDisposal> getDisposalsApprovedBy(Long userId) {
+        // Ensure user exists (matches test expectations)
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-    @Override
-    public List<AssetDisposal> findByApprover(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("User not found with id: " + userId));
-        return disposalRepository.findByApprovedBy(user);
+        // ✅ FIXED: ID-based query
+        return disposalRepository.findByApprovedBy_Id(userId);
     }
 }
