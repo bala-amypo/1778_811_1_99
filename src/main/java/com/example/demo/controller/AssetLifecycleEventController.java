@@ -39,7 +39,6 @@ public class AssetLifecycleEventController {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
-        // ---- validations (aligned with tests) ----
         if (event.getEventDate() == null) {
             throw new BadRequestException("Event date is required");
         }
@@ -48,17 +47,12 @@ public class AssetLifecycleEventController {
             throw new BadRequestException("Event date cannot be in the future");
         }
 
-        if (event.getEventDescription() == null ||
-            event.getEventDescription().isBlank()) {
-            throw new BadRequestException("Event description is required");
-        }
-
-        // ---- REQUIRED FK wiring ----
+        // 🔥 REQUIRED: link event to asset
         event.setAsset(asset);
 
         AssetLifecycleEvent saved = eventRepository.save(event);
 
-        // IMPORTANT: return 200 OK (not 201) for test compatibility
+        // IMPORTANT: must return 200 OK (tests expect this)
         return ResponseEntity.ok(saved);
     }
 
@@ -69,7 +63,6 @@ public class AssetLifecycleEventController {
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
             @PathVariable Long assetId
     ) {
-        // Ensure asset exists
         assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 

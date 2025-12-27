@@ -1,6 +1,5 @@
 package com.example.demo.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -29,12 +28,7 @@ public class AssetDisposal {
     private LocalDate disposalDate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(
-            name = "asset_id",
-            nullable = false,
-            foreignKey = @ForeignKey(name = "FK_asset_disposal_asset")
-    )
-    @JsonIgnore
+    @JoinColumn(name = "asset_id", nullable = false)
     private Asset asset;
 
     @ManyToOne(optional = false)
