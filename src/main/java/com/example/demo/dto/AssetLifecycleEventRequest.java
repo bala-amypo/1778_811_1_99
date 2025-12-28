@@ -1,34 +1,29 @@
 package com.example.demo.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDate;
-import com.example.demo.entity.AssetLifecycleEvent;
 
 public class AssetLifecycleEventRequest {
 
-    @NotNull
-    private EventType eventType;
+    @NotBlank
+    private String eventType;
+
+    @NotBlank
+    private String eventDescription;
 
     @NotNull
     private LocalDate eventDate;
 
-    private String eventDescription;
+    // getters & setters
 
-    // getters and setters
-    public EventType getEventType() {
+    public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(EventType eventType) {
+    public void setEventType(String eventType) {
         this.eventType = eventType;
-    }
-
-    public LocalDate getEventDate() {
-        return eventDate;
-    }
-
-    public void setEventDate(LocalDate eventDate) {
-        this.eventDate = eventDate;
     }
 
     public String getEventDescription() {
@@ -37,5 +32,13 @@ public class AssetLifecycleEventRequest {
 
     public void setEventDescription(String eventDescription) {
         this.eventDescription = eventDescription;
+    }
+
+    public LocalDate getEventDate() {
+        return eventDate;
+    }
+
+    public void setEventDate(LocalDate eventDate) {
+        this.eventDate = eventDate;
     }
 }

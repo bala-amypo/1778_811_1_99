@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 import com.example.demo.dto.AssetLifecycleEventRequest;
 
+
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetLifecycleEvent;
 import com.example.demo.exception.BadRequestException;
@@ -44,16 +45,16 @@ public class AssetLifecycleEventController {
             throw new BadRequestException("Event date cannot be in the future");
         }
 
-        // ✅ BUILD ENTITY HERE
         AssetLifecycleEvent event = new AssetLifecycleEvent();
         event.setEventType(request.getEventType());
-        event.setEventDate(request.getEventDate());
         event.setEventDescription(request.getEventDescription());
+        event.setEventDate(request.getEventDate());
         event.setAsset(asset);
 
         AssetLifecycleEvent saved = eventRepository.save(event);
         return ResponseEntity.ok(saved);
     }
+
 
 
 
