@@ -2,6 +2,8 @@
 package com.example.demo.controller;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.example.demo.dto.AssetDisposalResponse;
+
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetDisposal;
 import com.example.demo.entity.User;
@@ -57,12 +59,12 @@ public class AssetDisposalController {
                 .body(disposalRepository.save(disposal));
     }
 
-    @Transactional
-    @PutMapping("/approve/{disposalId}/{userId}")
-    public ResponseEntity<AssetDisposal> approve(
-            @PathVariable Long disposalId,
-            @PathVariable Long userId
-    ) {
+        @Transactional
+        @PutMapping("/approve/{disposalId}/{userId}")
+        public ResponseEntity<AssetDisposalResponse> approve(
+                @PathVariable Long disposalId,
+                @PathVariable Long userId
+        ) {
         AssetDisposal disposal = disposalRepository.findById(disposalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Disposal not found"));
 
@@ -73,8 +75,19 @@ public class AssetDisposalController {
 
         Asset asset = disposal.getAsset();
         asset.setStatus("DISPOSED");
-        assetRepository.save(asset);
 
-        return ResponseEntity.ok(disposalRepository.save(disposal));
-    }
+        assetRepository.save(asset);
+        disposalRepository.save(disposal);
+
+        AssetDisposalResponse response = new AssetDisposalResponse();
+        response.setId(disposal.getId());
+        response.setDisposalMethod(disposal.getDisposalMethod());
+        response.setDisposalValue(disposal.getDisposalValue());
+        response.setDisposalDate(disposal.getDisposalDate());
+        response.setAssetStatus(asset.getStatus());
+        response.setApprovedBy(approver.getEmail());
+
+        return ResponseEntity.ok(response);
+        }
+
 }
