@@ -2,7 +2,7 @@ package com.example.demo.dto;
 
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import com.example.demo.entity.EventType;
+import com.example.demo.entity.AssetLifecycleEvent;
 
 public class AssetLifecycleEventRequest {
 
