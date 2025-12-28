@@ -32,10 +32,9 @@ public class AssetDisposal {
     private Asset asset;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "approved_by_id", nullable = false)
+    @JoinColumn(name = "approved_by_id", nullable = true)
     private User approvedBy;
 
-    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;

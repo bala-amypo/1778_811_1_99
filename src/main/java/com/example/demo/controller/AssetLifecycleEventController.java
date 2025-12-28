@@ -29,10 +29,6 @@ public class AssetLifecycleEventController {
         this.eventRepository = eventRepository;
         this.assetRepository = assetRepository;
     }
-
-    // =========================================================
-    // CREATE lifecycle event for an asset
-    // =========================================================
     @PostMapping("/{assetId}")
     public ResponseEntity<AssetLifecycleEvent> createEvent(
             @PathVariable Long assetId,
@@ -54,13 +50,6 @@ public class AssetLifecycleEventController {
         AssetLifecycleEvent saved = eventRepository.save(event);
         return ResponseEntity.ok(saved);
     }
-
-
-
-
-        // =========================================================
-        // GET all lifecycle events for an asset
-    // =========================================================
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
             @PathVariable Long assetId
