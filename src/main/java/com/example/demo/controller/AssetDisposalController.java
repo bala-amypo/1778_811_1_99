@@ -1,7 +1,6 @@
-// =======================
-// AssetDisposalController.java
-// =======================
+
 package com.example.demo.controller;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetDisposal;
@@ -58,6 +57,7 @@ public class AssetDisposalController {
                 .body(disposalRepository.save(disposal));
     }
 
+    @Transactional
     @PutMapping("/approve/{disposalId}/{userId}")
     public ResponseEntity<AssetDisposal> approve(
             @PathVariable Long disposalId,
