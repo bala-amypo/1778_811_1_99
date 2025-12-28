@@ -23,11 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
-    /**
-     * Spring Security calls this method internally.
-     * We use EMAIL as the username.
-     */
     @Override
     public UserDetails loadUserByUsername(String email)
             throws UsernameNotFoundException {

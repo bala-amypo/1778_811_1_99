@@ -1,4 +1,3 @@
-// Asset.java
 package com.example.demo.entity;
 
 import jakarta.persistence.*;

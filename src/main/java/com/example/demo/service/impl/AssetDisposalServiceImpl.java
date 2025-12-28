@@ -25,7 +25,6 @@ public class AssetDisposalServiceImpl implements AssetDisposalService {
 
     @Override
     public List<AssetDisposal> getDisposalsApprovedBy(Long userId) {
-        // Ensure user exists (matches test expectations)
         userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 

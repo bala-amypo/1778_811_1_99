@@ -8,11 +8,9 @@ import java.util.List;
 
 public interface AssetDisposalRepository
         extends JpaRepository<AssetDisposal, Long> {
-
-    // ✅ SAFE, CANONICAL METHOD (used by services)
+  
     List<AssetDisposal> findByApprovedBy_Id(Long approvedById);
 
-    // ✅ BACKWARD-COMPATIBILITY FOR TESTS
     default List<AssetDisposal> findByApprovedBy(User approvedBy) {
         if (approvedBy == null || approvedBy.getId() == null) {
             return List.of();

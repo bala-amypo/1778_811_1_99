@@ -11,7 +11,7 @@ public class AssetDisposalResponse {
     private String assetStatus;
     private String approvedBy;
 
-    // Getters
+    
     public Long getId() {
         return id;
     }

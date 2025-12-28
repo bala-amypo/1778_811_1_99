@@ -16,7 +16,7 @@ public class AssetLifecycleEventRequest {
     @NotNull
     private LocalDate eventDate;
 
-    // getters & setters
+    
 
     public String getEventType() {
         return eventType;

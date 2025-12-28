@@ -29,7 +29,7 @@ public class SecurityConfig {
                 sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
 
-            /* 🔴 THIS IS THE CRITICAL FIX */
+            
             .exceptionHandling(ex -> ex
                 .authenticationEntryPoint((request, response, authException) ->
                         response.sendError(HttpServletResponse.SC_UNAUTHORIZED))

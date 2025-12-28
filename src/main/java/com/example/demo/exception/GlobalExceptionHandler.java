@@ -14,10 +14,6 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    /* =========================
-       400 — Bad Request
-       ========================= */
-
     @ExceptionHandler({
             IllegalArgumentException.class,
             BadRequestException.class,
@@ -31,18 +27,12 @@ public class GlobalExceptionHandler {
         );
     }
 
-    /* =========================
-       404 — Not Found
-       ========================= */
-
+ 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
         return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
-    /* =========================
-       500 — Internal Server Error
-       ========================= */
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
@@ -51,10 +41,6 @@ public class GlobalExceptionHandler {
                 "An unexpected error occurred"
         );
     }
-
-    /* =========================
-       Helper
-       ========================= */
 
     private ResponseEntity<Map<String, Object>> buildResponse(
             HttpStatus status, String message) {
