@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import com.example.demo.dto.AssetLifecycleEventRequest;
 
 import com.example.demo.entity.Asset;
 import com.example.demo.entity.AssetLifecycleEvent;
@@ -34,30 +35,30 @@ public class AssetLifecycleEventController {
     @PostMapping("/{assetId}")
     public ResponseEntity<AssetLifecycleEvent> createEvent(
             @PathVariable Long assetId,
-            @Valid @RequestBody AssetLifecycleEvent event
+            @Valid @RequestBody AssetLifecycleEventRequest request
     ) {
         Asset asset = assetRepository.findById(assetId)
                 .orElseThrow(() -> new ResourceNotFoundException("Asset not found"));
 
-        if (event.getEventDate() == null) {
-            throw new BadRequestException("Event date is required");
-        }
-
-        if (event.getEventDate().isAfter(LocalDate.now())) {
+        if (request.getEventDate().isAfter(LocalDate.now())) {
             throw new BadRequestException("Event date cannot be in the future");
         }
 
-        // 🔥 REQUIRED: link event to asset
+        // ✅ BUILD ENTITY HERE
+        AssetLifecycleEvent event = new AssetLifecycleEvent();
+        event.setEventType(request.getEventType());
+        event.setEventDate(request.getEventDate());
+        event.setEventDescription(request.getEventDescription());
         event.setAsset(asset);
 
         AssetLifecycleEvent saved = eventRepository.save(event);
-
-        // IMPORTANT: must return 200 OK (tests expect this)
         return ResponseEntity.ok(saved);
     }
 
-    // =========================================================
-    // GET all lifecycle events for an asset
+
+
+        // =========================================================
+        // GET all lifecycle events for an asset
     // =========================================================
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<AssetLifecycleEvent>> getByAsset(
