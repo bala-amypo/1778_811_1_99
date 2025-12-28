@@ -3,7 +3,8 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 import java.time.LocalDate;
 
 @Entity
@@ -38,10 +39,12 @@ public class Asset extends BaseEntity {
 
     @ManyToOne(optional = false)
     private DepreciationRule depreciationRule;
-
-    public String getAssetTag() {
-        return assetTag;
-    }
+    @OneToMany(mappedBy = "asset")
+    @JsonIgnore
+    private List<AssetDisposal> disposals;
+        public String getAssetTag() {
+            return assetTag;
+        }
 
     public void setAssetTag(String assetTag) {
         this.assetTag = assetTag;
