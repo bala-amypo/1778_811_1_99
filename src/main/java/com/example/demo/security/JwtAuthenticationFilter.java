@@ -52,7 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         List<String> roles = claims.get("roles", List.class);
 
-        // ✅ FIXED: explicit collection to avoid generic mismatch
+       
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         for (String role : roles) {
             if (!role.startsWith("ROLE_")) {

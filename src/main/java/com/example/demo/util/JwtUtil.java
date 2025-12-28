@@ -11,9 +11,8 @@ import java.util.Set;
 @Component
 public class JwtUtil {
 
-    private static final long EXPIRATION_MS = 1000 * 60 * 60; // 1 hour
+    private static final long EXPIRATION_MS = 1000 * 60 * 60; 
 
-    // Fixed secret so tests remain stable
     private static final String SECRET =
             "THIS_IS_A_VERY_SECRET_KEY_FOR_JWT_TESTING_123456";
 
@@ -24,9 +23,9 @@ public class JwtUtil {
     public String generateToken(String email, Long userId, Set<String> roles) {
         return Jwts.builder()
                 .setSubject(email)
-                .claim("email", email)      // ✅ REQUIRED
-                .claim("userId", userId)    // ✅ REQUIRED
-                .claim("roles", roles)      // ✅ REQUIRED
+                .claim("email", email)      
+                .claim("userId", userId)    
+                .claim("roles", roles)      
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)

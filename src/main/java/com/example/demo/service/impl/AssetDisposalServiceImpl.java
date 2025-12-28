@@ -27,8 +27,6 @@ public class AssetDisposalServiceImpl implements AssetDisposalService {
     public List<AssetDisposal> getDisposalsApprovedBy(Long userId) {
         userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
-
-        // ✅ FIXED: ID-based query
         return disposalRepository.findByApprovedBy_Id(userId);
     }
 }
