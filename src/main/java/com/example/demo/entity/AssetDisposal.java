@@ -31,7 +31,7 @@ public class AssetDisposal {
     @JoinColumn(name = "asset_id", nullable = false)
     private Asset asset;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = true)
     @JoinColumn(name = "approved_by_id", nullable = true)
     private User approvedBy;
 
