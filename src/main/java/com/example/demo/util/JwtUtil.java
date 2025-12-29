@@ -13,8 +13,7 @@ public class JwtUtil {
 
     private static final long EXPIRATION_MS = 1000 * 60 * 60; 
 
-    private static final String SECRET =
-            "THIS_IS_A_VERY_SECRET_KEY_FOR_JWT_TESTING_123456";
+    private static final String SECRET ="THIS_IS_A_VERY_SECRET_KEY_FOR_JWT_TESTING_123456";
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(SECRET.getBytes());
