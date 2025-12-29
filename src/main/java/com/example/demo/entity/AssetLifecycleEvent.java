@@ -25,8 +25,6 @@ public class AssetLifecycleEvent extends BaseEntity {
     @ManyToOne(optional = false)
     private Asset asset;
 
-    // getters & setters
-
     public String getEventType() {
         return eventType;
     }
